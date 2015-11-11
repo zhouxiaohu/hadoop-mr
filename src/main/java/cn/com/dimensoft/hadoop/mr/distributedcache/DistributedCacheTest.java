@@ -92,8 +92,8 @@ public class DistributedCacheTest extends Configured implements Tool {
 		@Override
 		protected void setup(Context context) throws IOException,
 				InterruptedException {
+			
 			// 打开分布式缓存文件进行分析
-
 			URI[] uris = context.getCacheFiles();
 
 			FileSystem system = FileSystem.get(context.getConfiguration());
