@@ -17,7 +17,6 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Mapper.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
@@ -32,7 +31,7 @@ import org.apache.hadoop.util.ToolRunner;
  * time： 2015年8月10日 下午3:50:17
  * description： 
  */
-public class MultipleOutputsMR extends Configured implements Tool {
+public class MultipleOutputsMRV2 extends Configured implements Tool {
 
 	/**
 	 * 
@@ -45,10 +44,10 @@ public class MultipleOutputsMR extends Configured implements Tool {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		args = new String[] { "/user/hadoop/mr/multi/input",
-				"/user/hadoop/mr/multi/output" };
+		args = new String[] { "/user/hadoop/mr/MultipleOutputs/input",
+				"/user/hadoop/mr/MultipleOutputs/output2" };
 
-		System.exit(ToolRunner.run(new MultipleOutputsMR(), args));
+		System.exit(ToolRunner.run(new MultipleOutputsMRV2(), args));
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class MultipleOutputsMR extends Configured implements Tool {
 		Job job = Job.getInstance(conf);
 
 		// set jar
-		job.setJarByClass(MultipleOutputsMR.class);
+		job.setJarByClass(MultipleOutputsMRV2.class);
 
 		// set Mapper
 		job.setMapperClass(MutltiMapper.class);
@@ -71,10 +70,10 @@ public class MultipleOutputsMR extends Configured implements Tool {
 		job.setMapOutputValueClass(NullWritable.class);
 
 		// MultipleOutputs
-		MultipleOutputs.addNamedOutput(job, "alphabet", TextOutputFormat.class,
+		MultipleOutputs.addNamedOutput(job, "box", TextOutputFormat.class,
 				Text.class, NullWritable.class);
-		MultipleOutputs.addNamedOutput(job, "number", TextOutputFormat.class,
-				Text.class, NullWritable.class);
+
+		MultipleOutputs.setCountersEnabled(job, true);
 
 		job.setNumReduceTasks(0);
 
@@ -111,9 +110,9 @@ public class MultipleOutputsMR extends Configured implements Tool {
 				throws IOException, InterruptedException {
 
 			if (value.toString().matches("[a-z]+")) {
-				mos.write("alphabet", value, NullWritable.get());
+				mos.write("box", value, NullWritable.get(), "alphabet");
 			} else {
-				mos.write("number", value, NullWritable.get());
+				mos.write("box", value, NullWritable.get(), "number");
 			}
 		}
 
@@ -123,5 +122,6 @@ public class MultipleOutputsMR extends Configured implements Tool {
 
 			mos.close();
 		}
+
 	}
 }
