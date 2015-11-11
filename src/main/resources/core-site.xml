@@ -25,4 +25,28 @@
 		<name>hadoop.tmp.dir</name>
 		<value>/home/hadoop/tmp/hadoop/dfs</value>
 	</property>
+	<property>
+		<name>io.compression.codecs</name>
+		<value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec
+	,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec</value>
+	</property>
+	
+	<!-- NFS-gateway 
+	<property>
+		<name>hadoop.proxyuser.hadoop.groups</name>
+		<value>*</value>
+		<description>
+			The 'nfsserver' user is allowed to proxy all members of the 'nfs-users1' and 
+		'nfs-users2' groups. Set this to '*' to allow nfsserver user to proxy any group.
+		</description>
+	</property>
+	<property>
+		<name>hadoop.proxyuser.hadoop.hosts</name>
+		<value>hadoop-pseudo.com.cn</value>
+		<description>
+			This is the host where the nfs gateway is running. Set this to '*' to allow
+		requests from any hosts to be proxied.
+		</description>
+	</property>
+	-->
 </configuration>
